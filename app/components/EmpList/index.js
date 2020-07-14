@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {View, TextInput, Text, StyleSheet} from 'react-native';
+import {View, StyleSheet} from 'react-native';
 import firebase from '../database';
 import UserComponent from '../UserComponent';
 import {ActivityIndicator, Colors} from 'react-native-paper';
@@ -22,12 +22,13 @@ class EmpList extends Component {
   componentDidMount() {
     usersRef.on('value', snapshot => {
       let data = snapshot.val();
+
       let users = Object.values(data);
       let ids = Object.keys(data);
-      for (let i = 0; 1 < data.length; i++){
-        
+      for (let i = 0; i < ids.length; i++) {
+        users[i].id = ids[i];
       }
-      this.setState({ users });
+      this.setState({users});
     });
   }
 

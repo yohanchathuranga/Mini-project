@@ -126,7 +126,7 @@ export default class UserComponent extends Component {
                     flexDirection: 'row',
                     justifyContent: 'space-between',
                   }}>
-                  <Text>{item.name}</Text>
+                  <Text style={styles.label}>{item.name}</Text>
                   <IconButton
                     icon="account-details"
                     color={Colors.blue500}
@@ -198,5 +198,8 @@ const styles = StyleSheet.create({
   item: {
     color: '#f20000',
     lineHeight: 100,
+  },
+  label: {
+    lineHeight: 40,
   },
 });

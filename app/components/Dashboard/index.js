@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {View, TextInput, Text, StyleSheet} from 'react-native';
+import {View, StyleSheet} from 'react-native';
 import {List, Appbar} from 'react-native-paper';
 import Home from '../Home';
 
@@ -11,12 +11,9 @@ class Dashboard extends Component {
         <Appbar style={styles.top}>
           <Appbar.Action
             icon="archive"
-            onPress={() => console.log('Pressed archive')}
-          />
-          <Appbar.Action
-            icon="email"
             onPress={() => this.props.navigation.navigate('EmpList')}
           />
+          <Appbar.Action icon="email" />
           <Appbar.Action
             icon="bell"
             onPress={() => this.props.navigation.navigate('Notifications')}
@@ -72,6 +69,6 @@ const styles = StyleSheet.create({
   },
   top: {
     justifyContent: 'space-around',
-    backgroundColor:'#3d77ff',
+    backgroundColor: '#3d77ff',
   },
 });

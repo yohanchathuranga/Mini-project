@@ -63,21 +63,8 @@ class Test extends Component {
         return reference.getDownloadURL();
       });
     console.log(reference.getDownloadURL());
-    //   .then(url => {
-    //     resolve(url);
-    //   })
-    //   .catch(error => {
-    //     reject(error);
-    //   });
-    // var bl = Blob.build(url);
-    // try {
-    //   console.log(url);
-    //   reference.put(bl).then(function(snapshot) {});
-    // } catch (err) {
-    //   console.log(JSON.stringify(err));
-    // }
   }
-  
+
   download() {
     let ref = firebase.storage().ref();
     ref

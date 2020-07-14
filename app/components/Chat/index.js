@@ -1,46 +1,79 @@
-import React from 'react';
-import {GiftedChat} from 'react-native-gifted-chat'; // 0.3.0
+import React, {useState, useEffect} from 'react';
+import {View, StyleSheet, FlatList, TouchableOpacity} from 'react-native';
+import {List, Divider} from 'react-native-paper';
+import firestore from '@react-native-firebase/firestore';
 
-import firebase from '../database';
-console.disableYellowBox = true;
+export default function Chat({navigation}) {
+  const [threads, setThreads] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-export default class Chat extends React.Component {
-  static navigationOptions = ({navigation}) => ({
-    title: (navigation.state.params || {}).id || 'Chat!',
-  });
+  /**
+   * Fetch threads from Firestore
+   */
+  useEffect(() => {
+    const unsubscribe = firestore()
+      .collection('THREADS')
+      // .orderBy('latestMessage.createdAt', 'desc')
+      .onSnapshot(querySnapshot => {
+        const threads = querySnapshot.docs.map(documentSnapshot => {
+          return {
+            _id: documentSnapshot.id,
+            // give defaults
+            name: '',
+            ...documentSnapshot.data(),
+          };
+        });
 
-  state = {
-    messages: [],
-  };
+        setThreads(threads);
 
-  get user() {
-    return {
-      //   name: this.props.navigation.state.params.id,
-      //   email: this.props.navigation.state.params.id,
-      //   avatar: this.props.navigation.state.params.avatar,
-      id: firebase.uid,
-      _id: firebase.uid,
-    };
+        if (loading) {
+          setLoading(false);
+        }
+      });
+
+    /**
+     * unsubscribe listener
+     */
+    return () => unsubscribe();
+  }, [loading]);
+
+  if (loading) {
+   
   }
 
-  render() {
-    return (
-      <GiftedChat
-        messages={this.state.messages}
-        onSend={firebase.send}
-        user={this.user}
+  return (
+    <View style={styles.container}>
+      <FlatList
+        data={threads}
+        keyExtractor={item => item._id}
+        ItemSeparatorComponent={() => <Divider />}
+        renderItem={({item}) => (
+          <TouchableOpacity
+            onPress={() => navigation.navigate('Room', {thread: item})}>
+            <List.Item
+              title={item.name}
+              description="Item description"
+              titleNumberOfLines={1}
+              titleStyle={styles.listTitle}
+              descriptionStyle={styles.listDescription}
+              descriptionNumberOfLines={1}
+            />
+          </TouchableOpacity>
+        )}
       />
-    );
-  }
-
-  componentDidMount() {
-    firebase.get(message =>
-      this.setState(previousState => ({
-        messages: GiftedChat.append(previousState.messages, message),
-      })),
-    );
-  }
-  componentWillUnmount() {
-    firebase.shared.Off();
-  }
+    </View>
+  );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    backgroundColor: '#f5f5f5',
+    flex: 1,
+  },
+  listTitle: {
+    fontSize: 22,
+  },
+  listDescription: {
+    fontSize: 16,
+  },
+});

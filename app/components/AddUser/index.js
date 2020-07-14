@@ -21,6 +21,14 @@ let addUser = (name, age, email, contact_no, department, status) => {
       contact_no: contact_no,
       department: department,
       status: status,
+    })
+    .catch(error => {
+      Alert.alert('Warning', 'Error in adding New User', [
+        {
+          text: 'ok',
+          onPress: () => this.props.navigation.navigate('AddUser'),
+        },
+      ]);
     });
 };
 

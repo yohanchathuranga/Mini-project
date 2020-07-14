@@ -25,6 +25,15 @@ let addNotification = (title, description, date) => {
       title: title,
       description: description,
       date: date,
+    })
+    .then(res => {})
+    .catch(error => {
+      Alert.alert('Warning', 'Error in adding Notifications', [
+        {
+          text: 'ok',
+          onPress: () => this.props.navigation.navigate('AddNotifications'),
+        },
+      ]);
     });
 };
 
@@ -43,8 +52,6 @@ class AddNotification extends Component {
       // setfileURI: useState(null),
     };
   }
-
-
 
   getCurrentDate = () => {
     var date = moment()
@@ -95,16 +102,6 @@ class AddNotification extends Component {
           onPress={this.handleSubmit}>
           <Text style={styles.buttonText}>Add</Text>
         </TouchableHighlight>
-
-        {/* <TouchableOpacity
-          activeOpacity={0.5}
-          style={styles.buttonStyle}
-          onPress={this.selectOneFile.bind(this)}>
-          <Text style={{marginRight: 10, fontSize: 19}}>
-            Click here to pick one file
-          </Text>
-          <Image source={this.fileURI} style={styles.imageIconStyle} />
-        </TouchableOpacity> */}
       </ScrollView>
     );
   }

@@ -57,7 +57,14 @@ class Home extends Component {
           });
           this.props.navigation.navigate('Dashboard');
         })
-        .c.catch(error => this.setState({errorMessage: error.message}));
+        .catch(error => {
+          Alert.alert('Warning', 'Error in Login', [
+            {
+              text: 'ok',
+              onPress: () => this.props.navigation.navigate('Login'),
+            },
+          ]);
+        });
     }
   };
   // Navigate() {
@@ -75,7 +82,6 @@ class Home extends Component {
   //       // this.setState({user});
   //     });
   // }
-
 
   render() {
     const {heading, input, label, parent, button, preloader} = styles;

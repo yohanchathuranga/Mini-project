@@ -6,6 +6,7 @@ import {
   StyleSheet,
   ScrollView,
   TouchableHighlight,
+  Alert,
 } from 'react-native';
 import {Colors, IconButton} from 'react-native-paper';
 import firebase from '../database';
@@ -15,6 +16,7 @@ class UserDetails extends Component {
   constructor() {
     super();
     this.state = {
+      id: '',
       name: '',
       age: '',
       email: '',
@@ -37,26 +39,70 @@ class UserDetails extends Component {
           console.log('Removed!');
           this.props.navigation.navigate('EmpList');
         });
+      })
+      .catch(error => {
+        Alert.alert('Warning', 'Error in Delete', [
+          {
+            text: 'ok',
+            onPress: () => this.props.navigation.navigate('UserDetails'),
+          },
+        ]);
       });
   }
-
+  deleteEvent(email) {
+    Alert.alert('Warning', 'Do you want to delete this User', [
+      {
+        text: 'Yes',
+        onPress: () => this.deleteUser(email),
+      },
+      {
+        text: 'No',
+        onPress: () => this.props.navigation.navigate('EmpList'),
+      },
+    ]);
+  }
   editUser() {
     this.setState({update: true});
   }
-  updateUser(email) {
-    console.log(email);
-    usersRef
-      .orderByChild('email')
-      .equalTo(email)
-      .once('value')
-      .then(function(snapshot) {
-        snapshot.forEach(function(child) {
-          child.ref.update({});
-          console.log('Updated!');
-          this.props.navigation.navigate('EmpList');
+  updateUser = () => {
+    firebase
+      .database()
+      .ref('users/' + this.state.id)
+      .update({
+        name: this.state.name,
+        age: this.state.age,
+        email: this.state.email,
+        contact_no: this.state.contact_no,
+        department: this.state.department,
+        status: this.state.status,
+      })
+      .then(res => {
+        this.setState({
+          id: '',
+          name: '',
+          age: '',
+          email: '',
+          contact_no: '',
+          department: '',
+          status: '',
+          update: '',
         });
+        Alert.alert('Success', 'User Updated successfully', [
+          {
+            text: 'ok',
+            onPress: () => this.props.navigation.navigate('EmpList'),
+          },
+        ]);
+      })
+      .catch(error => {
+        Alert.alert('Warning', 'Error in Updating', [
+          {
+            text: 'ok',
+            onPress: () => this.props.navigation.navigate('UserDetails'),
+          },
+        ]);
       });
-  }
+  };
   updateInputVal = (val, prop) => {
     const state = this.state;
     state[prop] = val;
@@ -77,17 +123,17 @@ class UserDetails extends Component {
       'department',
     );
     const status = this.props.navigation.getParam('status', 'status');
-    if (this.state.name == '') {
+    if (this.state.id == '') {
       this.setState({
+        id: id,
         name: name,
         age: age,
-        email: email,
+        email: this.props.navigation.getParam('email', 'email'),
         contact_no: contact_no,
         department: department,
         status: status,
       });
     }
-    
 
     if (this.state.update == true) {
       return (
@@ -133,7 +179,7 @@ class UserDetails extends Component {
           <TouchableHighlight
             style={styles.button}
             underlayColor="blue"
-            onPress={this.handleSubmit}>
+            onPress={this.updateUser}>
             <Text style={styles.buttonText}>Add</Text>
           </TouchableHighlight>
         </ScrollView>
@@ -164,7 +210,7 @@ class UserDetails extends Component {
               icon="delete"
               color={Colors.blue600}
               size={20}
-              onPress={() => this.deleteUser(email)}
+              onPress={() => this.deleteEvent(email)}
             />
           </View>
         </View>
@@ -180,7 +226,7 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    paddingHorizontal:35,
+    paddingHorizontal: 35,
   },
   header: {
     alignItems: 'flex-start',

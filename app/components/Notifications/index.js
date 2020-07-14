@@ -47,7 +47,7 @@ class Notifications extends Component {
                   onPress={() =>
                     Alert.alert('Success', notification.description, [
                       {
-                        text: 'ok',
+                        text: 'Cancel',
                         onPress: () =>
                           this.props.navigation.navigate('Notifications'),
                       },
@@ -64,13 +64,14 @@ class Notifications extends Component {
         )}
         <Provider>
           <Portal>
-            <FAB.Group
+            <FAB.Group style={styles.fab}
               open={open}
               icon={open ? 'menu' : 'menu'}
               actions={[
                 {
                   icon: 'plus',
-                  onPress: () => this.props.navigation.navigate('AddNotifications'),
+                  onPress: () =>
+                    this.props.navigation.navigate('AddNotifications'),
                 },
                 {
                   icon: 'briefcase',
@@ -109,6 +110,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   container: {
+    justifyContent: 'center',
+  },
+  fab: {
     justifyContent: 'center',
   },
 });
