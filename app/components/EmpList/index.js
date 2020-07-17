@@ -51,10 +51,3 @@ class EmpList extends Component {
 }
 export default EmpList;
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    backgroundColor: 'white',
-  },
-});

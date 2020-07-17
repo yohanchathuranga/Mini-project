@@ -3,20 +3,25 @@ import {
   StyleSheet,
   Text,
   View,
+  ScrollView,
   TextInput,
   Button,
   Alert,
   ActivityIndicator,
 } from 'react-native';
-import firebase, {db} from '../database';
+import firebase from '../database';
 console.disableYellowBox = true;
 
 export default class Signup extends Component {
   constructor() {
     super();
     this.state = {
-      displayName: '',
+      name: '',
+      age: '',
       email: '',
+      contact_no: '',
+      department: '',
+      status: '',
       password: '',
       isLoading: false,
     };
@@ -43,7 +48,7 @@ export default class Signup extends Component {
         )
         .then(res => {
           res.user.updateProfile({
-            displayName: this.state.displayName,
+            displayName: this.state.name,
           });
 
           if (res.user.uid) {
@@ -52,25 +57,46 @@ export default class Signup extends Component {
               .ref('/users')
               .push({
                 uid: res.user.uid,
+                name:this.state.name,
+                age:this.state.age,
                 email: this.state.email,
+                contact_no:this.state.contact_no,
+                department:this.state.department,
+                status:this.state.status
               });
+
+              // firebase.firestore()
+              // .collection('THREADS')
+              // .doc('zyDcp1PVyiIvZQQTvtJh')
+              // .add({
+              //   name: this.state.name
+              // })
           }
+         
           console.log('User registered successfully!');
           this.setState({
             isLoading: false,
-            displayName: '',
+            name: '',
+            age: '',
             email: '',
+            contact_no: '',
+            department: '',
+            status: '',
             password: '',
           });
-          this.props.navigation.navigate('Login');
+          Alert.alert('Success', 'User  successfully', [
+            {text: 'ok', onPress: () => this.props.navigation.navigate('Dashboard')},
+          ]);
         })
         .catch(error => {
-          Alert.alert('Warning', 'Error in SignUp', [
+          console.log(error)
+          Alert.alert('Warning', 'Error in SignUp'+error, [
             {
               text: 'ok',
               onPress: () => this.props.navigation.navigate('SignUp'),
             },
           ]);
+          this.props.navigation.navigate('SignUp')
         });
     }
   };
@@ -84,18 +110,42 @@ export default class Signup extends Component {
       );
     }
     return (
-      <View style={styles.container}>
+      <ScrollView style={styles.container}>
         <TextInput
           style={styles.inputStyle}
           placeholder="Name"
-          value={this.state.displayName}
-          onChangeText={val => this.updateInputVal(val, 'displayName')}
+          value={this.state.name}
+          onChangeText={val => this.updateInputVal(val, 'name')}
+        />
+        <TextInput
+          style={styles.inputStyle}
+          placeholder="Age"
+          value={this.state.age}
+          onChangeText={val => this.updateInputVal(val, 'age')}
         />
         <TextInput
           style={styles.inputStyle}
           placeholder="Email"
           value={this.state.email}
           onChangeText={val => this.updateInputVal(val, 'email')}
+        />
+        <TextInput
+          style={styles.inputStyle}
+          placeholder="Contact No"
+          value={this.state.contact_no}
+          onChangeText={val => this.updateInputVal(val, 'contact_no')}
+        />
+        <TextInput
+          style={styles.inputStyle}
+          placeholder="Department"
+          value={this.state.department}
+          onChangeText={val => this.updateInputVal(val, 'department')}
+        />
+        <TextInput
+          style={styles.inputStyle}
+          placeholder="Status"
+          value={this.state.status}
+          onChangeText={val => this.updateInputVal(val, 'status')}
         />
         <TextInput
           style={styles.inputStyle}
@@ -116,7 +166,7 @@ export default class Signup extends Component {
           onPress={() => this.props.navigation.navigate('Login')}>
           Already Registered? Click here to login
         </Text>
-      </View>
+      </ScrollView>
     );
   }
 }
@@ -126,7 +176,6 @@ const styles = StyleSheet.create({
     flex: 1,
     display: 'flex',
     flexDirection: 'column',
-    justifyContent: 'center',
     padding: 35,
     backgroundColor: '#fff',
   },

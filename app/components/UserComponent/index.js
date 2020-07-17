@@ -116,7 +116,7 @@ export default class UserComponent extends Component {
 
         <FlatList
           style={styles.container}
-          data={this.state.datasource}
+          data={this.state.datasource.sort((a, b) => a.name.localeCompare(b.name))}
           renderItem={({item}) => (
             <ScrollView>
               {item.status == this.state.chooseValue ||

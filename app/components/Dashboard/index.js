@@ -45,12 +45,20 @@ class Dashboard extends Component {
             onPress={() => this.props.navigation.navigate('AddNotifications')}
           />
           <List.Item
-            title=" Test"
+            title="Test"
             onPress={() => this.props.navigation.navigate('Test')}
           />
           <List.Item
-            title=" Home"
+            title="Home"
             onPress={() => this.props.navigation.navigate('Home')}
+          />
+          <List.Item
+            title="Register"
+            onPress={() => this.props.navigation.navigate('SignUp')}
+          />
+          <List.Item
+            title="Register"
+            onPress={() => this.props.navigation.navigate('Utils')}
           />
         </View>
 

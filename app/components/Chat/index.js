@@ -1,79 +1,115 @@
-import React, {useState, useEffect} from 'react';
-import {View, StyleSheet, FlatList, TouchableOpacity} from 'react-native';
-import {List, Divider} from 'react-native-paper';
-import firestore from '@react-native-firebase/firestore';
+import React, { useState, useCallback, useEffect, Component } from 'react';
+import { GiftedChat } from 'react-native-gifted-chat';
+import { View, StyleSheet,FlatList ,Text} from 'react-native';
+import firebase from '../database';
+import UserComponent from '../UserComponent';
+import { ActivityIndicator, Colors } from 'react-native-paper';
+import { grey300 } from 'react-native-paper/lib/typescript/src/styles/colors';
+console.disableYellowBox = true;
+let usersRef = firebase.database().ref('users');
 
-export default function Chat({navigation}) {
-  const [threads, setThreads] = useState([]);
-  const [loading, setLoading] = useState(true);
+class ChatList extends Component {
+    constructor() {
+        super();
+        this.state = {
+            isLoading: false,
+            users: [],
+        };
+        const user = firebase.auth().currentUser;
 
-  /**
-   * Fetch threads from Firestore
-   */
-  useEffect(() => {
-    const unsubscribe = firestore()
-      .collection('THREADS')
-      // .orderBy('latestMessage.createdAt', 'desc')
-      .onSnapshot(querySnapshot => {
-        const threads = querySnapshot.docs.map(documentSnapshot => {
-          return {
-            _id: documentSnapshot.id,
-            // give defaults
-            name: '',
-            ...documentSnapshot.data(),
-          };
+        console.log(user.uid)
+
+    }
+    state = {
+        users: [],
+    };
+
+    componentDidMount() {
+        usersRef.on('value', snapshot => {
+            let data = snapshot.val();
+
+            let users = Object.values(data);
+            let ids = Object.keys(data);
+            for (let i = 0; i < ids.length; i++) {
+                users[i].id = ids[i];
+            }
+            this.setState({ users });
         });
+    }
 
-        setThreads(threads);
+    // Chat=(reciever)=> {
+    //     const [messages, setMessages] = useState([]);
+    
+    //     useEffect(() => {
+    //         setMessages([{
+    //             _id: this.user.uid,
+    //             text: 'Hello developer',
+    //             createdAt: new Date(),
+    //             user: {
+    //                 _id: reciever.uid,
+    //                 name: 'React Native',
+    //                 avatar: 'https://placeimg.com/140/140/any',
+    //             },
+    //         }, ]);
+    //     }, []);
+    
+    //     const onSend = useCallback((messages = []) => {
+    //         setMessages(previousMessages =>
+    //             GiftedChat.append(previousMessages, messages),
+    //         );
+    //     }, []);
+    
+    //     return ( 
+    //         <GiftedChat messages = { messages }
+    //         onSend = { messages => onSend(messages) }
+    //         user = {
+    //             {
+    //                 _id: user.uid,
+    //             }
+    //         }
+    //         />
+    //     );
+    // };
 
-        if (loading) {
-          setLoading(false);
-        }
-      });
+    render() {
+        return ( 
+            <View style = { styles.container } > 
+            {this.state.users.length > 0 ? ( 
+                    <FlatList
+                    style={styles.container}
+                    data={this.state.users.sort((a, b) => a.name.localeCompare(b.name))}
+                    renderItem={({item}) =>
+                    (
+                    <Text style={styles.item}
+                    onPress={() =>this.props.navigation.navigate('Utils',{uid:item.uid,name:item.name})}>{item.name}</Text>
+                    )}
+                    />
+                    
 
-    /**
-     * unsubscribe listener
-     */
-    return () => unsubscribe();
-  }, [loading]);
-
-  if (loading) {
-   
-  }
-
-  return (
-    <View style={styles.container}>
-      <FlatList
-        data={threads}
-        keyExtractor={item => item._id}
-        ItemSeparatorComponent={() => <Divider />}
-        renderItem={({item}) => (
-          <TouchableOpacity
-            onPress={() => navigation.navigate('Room', {thread: item})}>
-            <List.Item
-              title={item.name}
-              description="Item description"
-              titleNumberOfLines={1}
-              titleStyle={styles.listTitle}
-              descriptionStyle={styles.listDescription}
-              descriptionNumberOfLines={1}
-            />
-          </TouchableOpacity>
-        )}
-      />
-    </View>
-  );
+                ) : ( 
+                    <View>
+                    <ActivityIndicator animating = { true }
+                    color = { Colors.blue800 }
+                    />
+                    </View>
+                )
+            }
+            </View>
+        );
+    }
 }
+export default ChatList;
+
 
 const styles = StyleSheet.create({
-  container: {
-    backgroundColor: '#f5f5f5',
-    flex: 1,
-  },
-  listTitle: {
-    fontSize: 22,
-  },
-  listDescription: {
-    fontSize: 16,
-  },
-});
+    container: {
+      flex: 1,
+    //   justifyContent: 'center',
+      backgroundColor: 'white',
+    },
+    item:{
+        lineHeight:50,
+        borderBottomWidth:1,
+    }
+  });
+  

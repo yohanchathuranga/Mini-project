@@ -12,20 +12,23 @@ import Notifications from './app/components/Notifications';
 import AddNotification from './app/components/AddNotification';
 import Test from './app/components/Test';
 import Home from './app/components/Home';
+import UserChat from './app/components/UserChat';
+import Utils from './app/components/Utils';
 import {createDrawerNavigator} from 'react-native-drawer';
 
 console.disableYellowBox = true;
 
 const NavStack = createStackNavigator({
+  Login: {
+    screen: Login,
+  },
   Dashboard: {
     screen: Dashboard,
   },
   SignUp: {
     screen: SignUp,
   },
-  Login: {
-    screen: Login,
-  },
+  
   EmpList: {
     screen: EmpList,
   },
@@ -49,6 +52,12 @@ const NavStack = createStackNavigator({
   },
   Test: {
     screen: Test,
+  },
+  UserChat: {
+    screen: UserChat,
+  },
+  Utils: {
+    screen: Utils,
   },
 });
 
