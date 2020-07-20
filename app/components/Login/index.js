@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import { NavigationActions } from 'react-navigation';
 import {
   View,
   TextInput,
@@ -58,10 +59,10 @@ class Home extends Component {
           this.props.navigation.navigate('Dashboard');
         })
         .catch(error => {
-          Alert.alert('Warning', 'Error in Login', [
+          Alert.alert('Warning', 'Error in Login'+error, [
             {
               text: 'ok',
-              onPress: () => this.props.navigation.navigate('Login'),
+              onPress: () => this.props.navigation.navigate('SignUp'),
             },
           ]);
         });
@@ -84,7 +85,7 @@ class Home extends Component {
   // }
 
   render() {
-    const {heading, input, label, parent, button, preloader} = styles;
+    const {heading, input, label, parent, button, preloader,registerText} = styles;
 
     if (this.state.isLoading) {
       return (
@@ -118,6 +119,12 @@ class Home extends Component {
           title={'Submit'}
           onPress={_ => this.userLogin()}
         />
+
+        <Text
+          style={registerText}
+          onPress={() => this.props.navigation.navigate('SignUp')}>
+          Click here to SignUp
+        </Text>
       </View>
     );
   }

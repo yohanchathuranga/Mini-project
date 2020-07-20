@@ -13,22 +13,21 @@ import AddNotification from './app/components/AddNotification';
 import Test from './app/components/Test';
 import Home from './app/components/Home';
 import UserChat from './app/components/UserChat';
-import Utils from './app/components/Utils';
+import Add from './app/components/Add';
+import SplashScreen from './app/components/SplashScreen'
 import {createDrawerNavigator} from 'react-native-drawer';
 
 console.disableYellowBox = true;
-
 const NavStack = createStackNavigator({
+  SignUp: {
+    screen: SignUp,
+  },
   Login: {
     screen: Login,
   },
   Dashboard: {
     screen: Dashboard,
   },
-  SignUp: {
-    screen: SignUp,
-  },
-  
   EmpList: {
     screen: EmpList,
   },
@@ -56,11 +55,14 @@ const NavStack = createStackNavigator({
   UserChat: {
     screen: UserChat,
   },
-  Utils: {
-    screen: Utils,
+  Add: {
+    screen: Add,
   },
 });
-
-const AppNav = createAppContainer(NavStack);
+const InitialNavigator = createSwitchNavigator({
+  Splash: SplashScreen,
+  App: NavStack
+});
+const AppNav = createAppContainer(InitialNavigator);
 
 export default AppNav;

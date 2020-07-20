@@ -110,7 +110,8 @@ export default class Signup extends Component {
       );
     }
     return (
-      <ScrollView style={styles.container}>
+      <View style={styles.container}>
+        <ScrollView style={styles.scrollview}>
         <TextInput
           style={styles.inputStyle}
           placeholder="Name"
@@ -164,9 +165,12 @@ export default class Signup extends Component {
         <Text
           style={styles.loginText}
           onPress={() => this.props.navigation.navigate('Login')}>
-          Already Registered? Click here to login
+          Already Registered? Click here to login.
         </Text>
+        
       </ScrollView>
+      </View>
+      
     );
   }
 }
@@ -176,8 +180,13 @@ const styles = StyleSheet.create({
     flex: 1,
     display: 'flex',
     flexDirection: 'column',
-    padding: 35,
     backgroundColor: '#fff',
+    paddingVertical:20,
+    
+  },
+  scrollview:{
+    paddingHorizontal:35,
+    
   },
   inputStyle: {
     width: '100%',

@@ -4,7 +4,6 @@ import { View, StyleSheet,FlatList ,Text} from 'react-native';
 import firebase from '../database';
 import UserComponent from '../UserComponent';
 import { ActivityIndicator, Colors } from 'react-native-paper';
-import { grey300 } from 'react-native-paper/lib/typescript/src/styles/colors';
 console.disableYellowBox = true;
 let usersRef = firebase.database().ref('users');
 
@@ -81,7 +80,7 @@ class ChatList extends Component {
                     renderItem={({item}) =>
                     (
                     <Text style={styles.item}
-                    onPress={() =>this.props.navigation.navigate('Utils',{uid:item.uid,name:item.name})}>{item.name}</Text>
+                    onPress={() =>this.props.navigation.navigate('UserChat',{uid:item.uid,name:item.name})}>{item.name}</Text>
                     )}
                     />
                     
@@ -110,6 +109,8 @@ const styles = StyleSheet.create({
     item:{
         lineHeight:50,
         borderBottomWidth:1,
+        borderBottomColor:'#bec7d4',
+        paddingLeft:20
     }
   });
   

@@ -13,9 +13,6 @@ import {
 import firebase from '../database';
 import moment from 'moment';
 console.disableYellowBox = true;
-// import DocumentPicker from 'react-native-document-picker';
-// import {filePickerOptions, uploadFileToFireBase} from '../Utils';
-// export const FireBaseStorage = storage();
 
 let addNotification = (title, description, date) => {
   firebase
@@ -87,13 +84,6 @@ class AddNotification extends Component {
         <TextInput
           style={styles.userInput}
           onChangeText={val => this.updateInputVal(val, 'description')}
-        />
-        <Text>Date</Text>
-        <TextInput
-          style={styles.userInput}
-          value={this.getCurrentDate}
-          onChangeText={val => this.updateInputVal(val, 'contact_no')}
-          caretHidden={true}
         />
 
         <TouchableHighlight

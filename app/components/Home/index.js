@@ -1,12 +1,12 @@
+import { Renderer2 } from '@angular/core';
 import * as React from 'react';
 import {FAB, Portal, Provider} from 'react-native-paper';
+import firebase from '../database'
 
 const Home = ({navigation}) => {
-  const [state, setState] = React.useState({open: false});
-
-  const onStateChange = ({open}) => setState({open});
-
-  const {open} = state;
+  const [state, setState] = React.useState({open: false,img:''});
+  const onStateChange = ({open},{img}) => setState({open},{img});
+  const {open,img} = state;
 
   return (
     <Provider>

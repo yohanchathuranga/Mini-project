@@ -1,5 +1,4 @@
 import {StyleSheet} from 'react-native'
-import { color } from 'react-native-reanimated'
 export default StyleSheet.create({
     heading : {
         fontSize : 30,
@@ -48,6 +47,11 @@ export default StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         backgroundColor: '#fff'
-      }
+      },
+      registerText: {
+        color: '#3740FE',
+        marginTop: 25,
+        textAlign: 'center',
+      },
 
 })

@@ -8,7 +8,7 @@ import {
   FlatList,
 } from 'react-native';
 import PropTypes from 'prop-types';
-import {List, IconButton, Colors, Searchbar, Appbar} from 'react-native-paper';
+import { IconButton, Colors, Searchbar, Divider} from 'react-native-paper';
 import call from 'react-native-phone-call';
 import SendSMS from 'react-native-sms';
 console.disableYellowBox = true;
@@ -54,7 +54,7 @@ export default class UserComponent extends Component {
     });
   }
 
-  someFunction(no) {
+  smsSend(no) {
     SendSMS.send(
       {
         body: '',
@@ -124,9 +124,14 @@ export default class UserComponent extends Component {
                 <View
                   style={{
                     flexDirection: 'row',
-                    justifyContent: 'space-between',
+                    justifyContent:'space-between',
+                    paddingHorizontal:20,
                   }}>
                   <Text style={styles.label}>{item.name}</Text>
+                  <View style={{
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                  }}>
                   <IconButton
                     icon="account-details"
                     color={Colors.blue500}
@@ -153,10 +158,13 @@ export default class UserComponent extends Component {
                     icon="message"
                     color={Colors.blue500}
                     size={20}
-                    onPress={() => this.someFunction(item.contact_no)}
+                    onPress={() => this.smsSend(item.contact_no)}
                   />
+                  </View>
+                  
                 </View>
               ) : null}
+              <Divider/>
             </ScrollView>
           )}
           keyExtractor={extractKey}
@@ -200,6 +208,7 @@ const styles = StyleSheet.create({
     lineHeight: 100,
   },
   label: {
-    lineHeight: 40,
+    lineHeight: 45,
+    fontSize:15,
   },
 });

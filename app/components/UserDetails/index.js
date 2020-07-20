@@ -8,7 +8,7 @@ import {
   TouchableHighlight,
   Alert,
 } from 'react-native';
-import {Colors, IconButton} from 'react-native-paper';
+import {Colors, IconButton,Appbar} from 'react-native-paper';
 import firebase from '../database';
 let usersRef = firebase.database().ref('users');
 console.disableYellowBox = true;
@@ -90,7 +90,7 @@ class UserDetails extends Component {
         Alert.alert('Success', 'User Updated successfully', [
           {
             text: 'ok',
-            onPress: () => this.props.navigation.navigate('EmpList'),
+            onPress: () => this.props.navigation.navigate('UserDetails'),
           },
         ]);
       })
@@ -180,7 +180,7 @@ class UserDetails extends Component {
             style={styles.button}
             underlayColor="blue"
             onPress={this.updateUser}>
-            <Text style={styles.buttonText}>Add</Text>
+            <Text style={styles.buttonText}>Update</Text>
           </TouchableHighlight>
         </ScrollView>
       );
@@ -192,15 +192,26 @@ class UserDetails extends Component {
           </View>
 
           <View style={styles.body}>
-            <Text style={styles.detail}>Age : {age}</Text>
-            <Text style={styles.detail}>Email:{email}</Text>
-            <Text style={styles.detail}>Contact No :{contact_no}</Text>
-            <Text style={styles.detail}>Department :{department}</Text>
-            <Text style={styles.detail}>Position :{status}</Text>
+            <Text style={styles.detail}>Age   :   {age}</Text>
+            <Text style={styles.detail}>Email   :   {email}</Text>
+            <Text style={styles.detail}>Contact No   :   {contact_no}</Text>
+            <Text style={styles.detail}>Department   :    {department}</Text>
+            <Text style={styles.detail}>Position   :    {status}</Text>
           </View>
-          <View style={styles.bottom}>
+
+          <Appbar style={styles.bottombar}>
+            <Appbar.Action
+              icon="settings"
+              onPress={() => this.editUser()}
+              />
+              <Appbar.Action
+                icon="delete"
+                onPress={()=>this.deleteEvent(email)}
+              />
+          </Appbar>
+          {/* <View style={styles.bottom}>
             <IconButton
-              icon="edit"
+              icon="settings"
               color={Colors.blue600}
               size={20}
               onPress={() => this.editUser()}
@@ -212,7 +223,7 @@ class UserDetails extends Component {
               size={20}
               onPress={() => this.deleteEvent(email)}
             />
-          </View>
+          </View> */}
         </View>
       );
     }
@@ -231,7 +242,7 @@ const styles = StyleSheet.create({
   header: {
     alignItems: 'flex-start',
     height: 200,
-    backgroundColor: '#32a889',
+    backgroundColor: '#3d77ff',
     fontSize: 40,
     justifyContent: 'flex-end',
   },
@@ -248,6 +259,7 @@ const styles = StyleSheet.create({
   },
   bottom: {
     flexDirection: 'row',
+    justifyContent:'space-around'
   },
 
   title: {
@@ -279,5 +291,13 @@ const styles = StyleSheet.create({
     marginTop: 10,
     alignSelf: 'stretch',
     justifyContent: 'center',
+  },
+  bottombar: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    bottom: 0,
+    justifyContent:'space-around',
+    backgroundColor:'#3d77ff',
   },
 });

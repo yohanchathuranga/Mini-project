@@ -25,6 +25,12 @@ class Test extends Component {
       singleFile: '',
     };
   }
+  componentDidMount() {
+  const images = firebase.storage().ref('application/').on('value', (snap) => {
+    let im=snap.val();
+    console.log(im)
+  });
+}
   async selectOneFile() {
     //Opening Document Picker for selection of one file
     try {

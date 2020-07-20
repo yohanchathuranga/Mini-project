@@ -7,6 +7,7 @@ import {
   Portal,
   Provider,
   FAB,
+  Divider
 } from 'react-native-paper';
 import firebase from '../database';
 console.disableYellowBox = true;
@@ -40,12 +41,12 @@ class Notifications extends Component {
             <Text>Tap on Messege to see more...</Text>
             {arr.map((notification, index) => (
               <ScrollView key={index}>
-                <List.Item
+                <List.Item style={styles.item}
                   title={notification.title}
                   description={notification.description}
                   right={() => <Text>{notification.date}</Text>}
                   onPress={() =>
-                    Alert.alert('Success', notification.description, [
+                    Alert.alert(notification.title, notification.description, [
                       {
                         text: 'Cancel',
                         onPress: () =>
@@ -54,6 +55,7 @@ class Notifications extends Component {
                     ])
                   }
                 />
+                <Divider/>
               </ScrollView>
             ))}
           </View>
@@ -73,29 +75,10 @@ class Notifications extends Component {
                   onPress: () =>
                     this.props.navigation.navigate('AddNotifications'),
                 },
-                {
-                  icon: 'briefcase',
-                  label: 'Employees',
-                  onPress: () => this.props.navigation.navigate('EmpList'),
-                },
-                {
-                  icon: 'email',
-                  label: 'Email',
-                  onPress: () =>
-                    this.props.navigation.navigate('Notifications'),
-                },
-                {
-                  icon: 'bell',
-                  label: 'Notifications',
-                  onPress: () =>
-                    this.props.navigation.navigate('Notifications'),
-                },
               ]}
               onStateChange={onStateChange}
               onPress={() => {
-                if (open) {
-                  // do something if the speed dial is open
-                }
+
               }}
             />
           </Portal>
@@ -115,4 +98,8 @@ const styles = StyleSheet.create({
   fab: {
     justifyContent: 'center',
   },
+  item:{
+    borderTopColor:'blue',
+    borderTopWidth:5,
+  }
 });
