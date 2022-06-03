@@ -10,7 +10,7 @@
     "lint": "eslint ."
   },
   "dependencies": {
-    "@angular/core": "^10.0.2",
+    "@angular/core": "^11.0.5",
     "@ionic-native/android-permissions": "^5.27.0",
     "@ionic-native/core": "^5.27.0",
     "@react-native-community/masked-view": "^0.1.10",
